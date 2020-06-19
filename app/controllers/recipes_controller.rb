@@ -9,22 +9,19 @@ class RecipesController < ApplicationController
 
   def new
     @recipe = Recipe.new
-    2.times do |i|
-      @recipe.ingredients.build()
-    end
+    @recipe.ingredients.build(name: "First Ingredient")
+    @recipe.ingredients.build(name: "Second Ingredient")
   end
 
   def create
-    @recipe = Recipe.create(recipe_params)
-    redirect_to recipe_path(@recipe)
+    Recipe.create(recipe_params)
+    redirect_to recipes_path
   end
-  
-  private
-  
-  def repice_params
-    params.require(:recipe).permit(:title, ingredients_attributes: [
-      :name,
-      :quantity
-      ])
+
+  def recipe_params
+    params.require(:recipe).permit(
+      :title,
+      ingredients_attributes: [ :name, :quantity ]
+    )
   end
 end
